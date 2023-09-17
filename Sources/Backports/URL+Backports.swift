@@ -23,13 +23,13 @@ extension URL {
     }
 }
 
-@available(iOS, deprecated: 16.0, message: "Backport support for this call is unnecessary")
 @available(macOS, deprecated: 13.0, message: "Backport support for this call is unnecessary")
+@available(iOS, deprecated: 16.0, message: "Backport support for this call is unnecessary")
 @available(tvOS, deprecated: 16.0, message: "Backport support for this call is unnecessary")
 @available(watchOS, deprecated: 9.0, message: "Backport support for this call is unnecessary")
 public extension URL {
     static var homeDirectory: Self {
-        if #available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *) {
+        if #available(macOS 13.0, iOS 16.0, tvOS 16.0, watchOS 9.0, *) {
             return homeDirectory_native
         } else {
             return homeDirectory_backport
@@ -37,7 +37,7 @@ public extension URL {
     }
     
     static var documentsDirectory: Self {
-        if #available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *) {
+        if #available(macOS 13.0, iOS 16.0, tvOS 16.0, watchOS 9.0, *) {
             return documentsDirectory_native
         } else {
             return documentsDirectory_backport
@@ -45,7 +45,7 @@ public extension URL {
     }
     
     static var temporaryDirectory: Self {
-        if #available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *) {
+        if #available(macOS 13.0, iOS 16.0, tvOS 16.0, watchOS 9.0, *) {
             return temporaryDirectory_native
         } else {
             return temporaryDirectory_backport

@@ -87,13 +87,13 @@ extension Collection where Element: Equatable {
     }
 }
 
-@available(iOS, deprecated: 16.0, message: "Backport support for this call is unnecessary")
 @available(macOS, deprecated: 13.0, message: "Backport support for this call is unnecessary")
+@available(iOS, deprecated: 16.0, message: "Backport support for this call is unnecessary")
 @available(tvOS, deprecated: 16.0, message: "Backport support for this call is unnecessary")
 @available(watchOS, deprecated: 9.0, message: "Backport support for this call is unnecessary")
 public extension Collection where Element: Equatable {
     func firstRange<C: Collection>(of separator: C) -> Range<Self.Index>? where C.Element == Element {
-        if #available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *) {
+        if #available(macOS 13.0, iOS 16.0, tvOS 16.0, watchOS 9.0, *) {
             return firstRange_native(of: separator)
         } else {
             return firstRange_backport(of: separator)
@@ -101,7 +101,7 @@ public extension Collection where Element: Equatable {
     }
 
     func ranges<C: Collection>(of separator: C) -> [Range<Self.Index>] where C.Element == Element {
-        if #available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *) {
+        if #available(macOS 13.0, iOS 16.0, tvOS 16.0, watchOS 9.0, *) {
             return ranges_native(of: separator)
         } else {
             return ranges_backport(of: separator)
@@ -109,7 +109,7 @@ public extension Collection where Element: Equatable {
     }
 
     func split<C: Collection>(separator: C, maxSplits: Int = .max, omittingEmptySubsequences: Bool = true) -> [SubSequence] where C.Element == Element {
-        if #available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *) {
+        if #available(macOS 13.0, iOS 16.0, tvOS 16.0, watchOS 9.0, *) {
             return split_native(separator: separator, maxSplits: maxSplits, omittingEmptySubsequences: omittingEmptySubsequences)
         } else {
             return split_backport(separator: separator, maxSplits: maxSplits, omittingEmptySubsequences: omittingEmptySubsequences)

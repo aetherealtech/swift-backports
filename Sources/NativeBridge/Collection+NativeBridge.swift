@@ -1,4 +1,4 @@
-@available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *)
+@available(macOS 13.0, iOS 16.0, tvOS 16.0, watchOS 9.0, *)
 public extension Collection where Element: Equatable {
     @inline(__always)
     func firstRange_native<C: Collection>(of separator: C) -> Range<Self.Index>? where C.Element == Element {
