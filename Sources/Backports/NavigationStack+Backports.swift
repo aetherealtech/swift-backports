@@ -181,11 +181,7 @@ struct NavigationPath_Backport: Equatable {
         return .reified(.init(value: value, type: type))
     }
     
-    private var values: [NavigationValue] = [] {
-        didSet {
-            print("PATH: \(values)")
-        }
-    }
+    private var values: [NavigationValue] = []
 }
 
 @available(iOS, introduced: 13.0, deprecated: 16.0, message: "Backport support for this call is unnecessary")
