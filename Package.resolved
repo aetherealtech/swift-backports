@@ -1,0 +1,14 @@
+{
+  "pins" : [
+    {
+      "identity" : "swift-synchronization",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/aetherealtech/swift-synchronization",
+      "state" : {
+        "branch" : "master",
+        "revision" : "cfb0a9d8c7af5641548c79f965b8d5bcf0219da9"
+      }
+    }
+  ],
+  "version" : 2
+}
