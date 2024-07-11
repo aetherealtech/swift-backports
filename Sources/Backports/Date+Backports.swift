@@ -12,14 +12,21 @@ public extension Date {
     }
 }
 
-extension Date: Strideable {
-    public typealias Stride = TimeInterval
+
+@available(macOS, obsoleted: 13.0, message: "Backport support for this call is unnecessary")
+@available(iOS, obsoleted: 16.0, message: "Backport support for this call is unnecessary")
+@available(tvOS, obsoleted: 16.0, message: "Backport support for this call is unnecessary")
+@available(watchOS, obsoleted: 9.0, message: "Backport support for this call is unnecessary")
+extension Date: Strideable {}
+
+public extension Date {
+    typealias Stride = TimeInterval
     
     @available(macOS, obsoleted: 10.15, message: "Backport support for this call is unnecessary")
     @available(iOS, obsoleted: 16.0, message: "Backport support for this call is unnecessary")
     @available(tvOS, obsoleted: 16.0, message: "Backport support for this call is unnecessary")
     @available(watchOS, obsoleted: 9.0, message: "Backport support for this call is unnecessary")
-    public func distance(to other: Date) -> Stride {
+    func distance(to other: Date) -> Stride {
         if #available(macOS 10.15, iOS 16.0, tvOS 16.0, watchOS 9.0, *) {
             return distance_native(to: other)
         } else {
@@ -31,7 +38,7 @@ extension Date: Strideable {
     @available(iOS, obsoleted: 16.0, message: "Backport support for this call is unnecessary")
     @available(tvOS, obsoleted: 16.0, message: "Backport support for this call is unnecessary")
     @available(watchOS, obsoleted: 9.0, message: "Backport support for this call is unnecessary")
-    public func advanced(by n: Stride) -> Date {
+    func advanced(by n: Stride) -> Date {
         if #available(macOS 10.15, iOS 16.0, tvOS 16.0, watchOS 9.0, *) {
             return advanced_native(by: n)
         } else {
