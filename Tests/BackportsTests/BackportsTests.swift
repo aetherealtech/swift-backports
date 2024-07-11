@@ -10,18 +10,9 @@ func XCTAssertEqual<T: Equatable, Lhs: Sequence, Rhs: Sequence>(_ lhs: Lhs, _ rh
 final class CollectionTests: XCTestCase {
     func testSplit() throws {
         let string = "dfgdg;;dfgdgdfgdg;;;;gdfgdgdfgdg;;thfhnsdfs;;sef;;sdfhgh"
-        
-        let expectedResult = [
-            "dfgdg",
-            "dfgdgdfgdg",
-            "",
-            "gdfgdgdfgdg",
-            "thfhnsdfs",
-            "sef",
-            "sdfhgh",
-        ]
-        
-        let actualResult = string.split(separator: ";;", omittingEmptySubsequences: false)
+
+        let expectedResult = string.split_native(separator: ";;", omittingEmptySubsequences: false)
+        let actualResult = string.split_backport(separator: ";;", omittingEmptySubsequences: false)
         
         XCTAssertEqual(actualResult, expectedResult)
     }
@@ -29,16 +20,29 @@ final class CollectionTests: XCTestCase {
     func testSplitOmittingEmpty() throws {
         let string = "dfgdg;;dfgdgdfgdg;;;;gdfgdgdfgdg;;thfhnsdfs;;sef;;sdfhgh"
         
-        let expectedResult = [
-            "dfgdg",
-            "dfgdgdfgdg",
-            "gdfgdgdfgdg",
-            "thfhnsdfs",
-            "sef",
-            "sdfhgh",
-        ]
+        let expectedResult = string.split_native(separator: ";;", omittingEmptySubsequences: true)
+        let actualResult = string.split_backport(separator: ";;", omittingEmptySubsequences: true)
         
-        let actualResult = string.split(separator: ";;", omittingEmptySubsequences: true)
+        XCTAssertEqual(actualResult, expectedResult)
+    }
+}
+
+final class DateTests: XCTestCase {
+    func testDistance() throws {
+        let date = Date()
+        let otherDate = date.addingTimeInterval(5)
+        
+        let expectedResult = otherDate.distance_native(to: date)
+        let actualResult = otherDate.distance_backport(to: date)
+        
+        XCTAssertEqual(actualResult, expectedResult)
+    }
+    
+    func testAdvanced() throws {
+        let date = Date()
+        
+        let expectedResult = date.advanced_native(by: 5)
+        let actualResult = date.advanced_backport(by: 5)
         
         XCTAssertEqual(actualResult, expectedResult)
     }
