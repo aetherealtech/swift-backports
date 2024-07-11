@@ -27,23 +27,34 @@ final class CollectionTests: XCTestCase {
     }
 }
 
+extension TimeInterval {
+    static var random: Self {
+        .random(in: -1e12..<1e12)
+    }
+}
+
 final class DateTests: XCTestCase {
     func testDistance() throws {
-        let date = Date()
-        let otherDate = date.addingTimeInterval(5)
-        
-        let expectedResult = otherDate.distance_native(to: date)
-        let actualResult = otherDate.distance_backport(to: date)
-        
-        XCTAssertEqual(actualResult, expectedResult)
+        for _ in 0..<100 {
+            let date = Date(timeIntervalSince1970: .random)
+            let otherDate = Date(timeIntervalSince1970: .random)
+            
+            let expectedResult = otherDate.distance_native(to: date)
+            let actualResult = otherDate.distance_backport(to: date)
+            
+            XCTAssertEqual(actualResult, expectedResult)
+        }
     }
     
     func testAdvanced() throws {
-        let date = Date()
-        
-        let expectedResult = date.advanced_native(by: 5)
-        let actualResult = date.advanced_backport(by: 5)
-        
-        XCTAssertEqual(actualResult, expectedResult)
+        for _ in 0..<100 {
+            let date = Date(timeIntervalSince1970: .random)
+            let timeInterval = TimeInterval.random
+            
+            let expectedResult = date.advanced_native(by: timeInterval)
+            let actualResult = date.advanced_backport(by: timeInterval)
+            
+            XCTAssertEqual(actualResult, expectedResult)
+        }
     }
 }
