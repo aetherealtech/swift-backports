@@ -12,13 +12,6 @@ public extension Date {
     }
 }
 
-
-@available(macOS, obsoleted: 13.0, message: "Backport support for this call is unnecessary")
-@available(iOS, obsoleted: 16.0, message: "Backport support for this call is unnecessary")
-@available(tvOS, obsoleted: 16.0, message: "Backport support for this call is unnecessary")
-@available(watchOS, obsoleted: 9.0, message: "Backport support for this call is unnecessary")
-extension Date: Strideable {}
-
 public extension Date {
     typealias Stride = TimeInterval
     
