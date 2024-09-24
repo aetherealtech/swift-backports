@@ -255,9 +255,11 @@ struct NavigationNode<Content: View>: View {
 @available(iOS, introduced: 13.0, deprecated: 16.0, message: "Backport support for this call is unnecessary")
 @available(tvOS, introduced: 13.0, deprecated: 16.0, message: "Backport support for this call is unnecessary")
 @available(watchOS, introduced: 6.0, deprecated: 9.0, message: "Backport support for this call is unnecessary")
+@MainActor
 final class NavigationState: ObservableObject {
+    @MainActor
     struct PathIterator {
-        let value: NavigationValue?
+        nonisolated(unsafe) let value: NavigationValue?
         var next: PathIterator { getNext() }
 
         var isActive: Binding<Bool> {
@@ -377,24 +379,24 @@ struct StateObject_Backport<T: ObservableObject>: DynamicProperty {
 @available(watchOS, introduced: 6.0, deprecated: 9.0, message: "Backport support for this call is unnecessary")
 struct NavigationDestinationModifier<D: Hashable, C: View>: ViewModifier {
     func body(content: Content) -> some View {
-        state.add(viewBuilder: _destination.wrappedValue, for: type)
+        state.add(viewBuilder: destination, for: type)
         return content
             .environmentObject(state)
     }
 
     let type: D.Type
     
-    nonisolated init(
+    init(
         type: D.Type,
         destination: @escaping (D) -> C
     ) {
         self.type = type
-        _destination = .init(wrappedValue: destination)
+        self.destination = destination
     }
 
     @EnvironmentObject private var state: NavigationState
     
-    private let _destination: Synchronized<(D) -> C>
+    private let destination: (D) -> C
 }
 
 @available(iOS, introduced: 13.0, deprecated: 16.0, message: "Backport support for this call is unnecessary")

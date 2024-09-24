@@ -1,4 +1,4 @@
-// swift-tools-version: 5.10
+// swift-tools-version: 6.0
 
 import PackageDescription
 
@@ -19,34 +19,15 @@ let package = Package(
             dependencies: [
                 "NativeBridge",
                 .product(name: "Synchronization", package: "swift-synchronization"),
-            ],
-            swiftSettings: [.concurrencyChecking(.complete)]
+            ]
         ),
         .target(
             name: "NativeBridge",
-            dependencies: [],
-            swiftSettings: [.concurrencyChecking(.complete)]
+            dependencies: []
         ),
         .testTarget(
             name: "BackportsTests",
-            dependencies: ["Backports"],
-            swiftSettings: [.concurrencyChecking(.complete)]
+            dependencies: ["Backports"]
         ),
     ]
 )
-
-extension SwiftSetting {
-    enum ConcurrencyChecking: String {
-        case complete
-        case minimal
-        case targeted
-    }
-    
-    static func concurrencyChecking(_ setting: ConcurrencyChecking = .minimal) -> Self {
-        unsafeFlags([
-            "-Xfrontend", "-strict-concurrency=\(setting)",
-            "-Xfrontend", "-warn-concurrency",
-            "-Xfrontend", "-enable-actor-data-race-checks",
-        ])
-    }
-}

@@ -1,4 +1,5 @@
 {
+  "originHash" : "43caf1887f6e6b9e29c10d95cb8f9a865e4f87a9116229293e08f93da9e023e3",
   "pins" : [
     {
       "identity" : "swift-synchronization",
@@ -6,9 +7,9 @@
       "location" : "https://github.com/aetherealtech/swift-synchronization",
       "state" : {
         "branch" : "master",
-        "revision" : "cfb0a9d8c7af5641548c79f965b8d5bcf0219da9"
+        "revision" : "d71ae84f88a24ec9cafbb569d45323c56ed491ec"
       }
     }
   ],
-  "version" : 2
+  "version" : 3
 }

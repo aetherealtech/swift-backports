@@ -7,7 +7,9 @@ public extension URLSession {
     @inline(__always)
     func data_backport(for request: URLRequest) async throws -> (Data, URLResponse) {
         try await adaptTask { completionHandler in
-            dataTask(with: request, completionHandler: completionHandler)
+            dataTask(with: request) { data, response, error in
+                completionHandler(data, response, error)
+            }
         }
     }
 
@@ -19,21 +21,27 @@ public extension URLSession {
     @inline(__always)
     func upload_backport(for request: URLRequest, fromFile fileURL: URL) async throws -> (Data, URLResponse) {
         try await adaptTask { completionHandler in
-            uploadTask(with: request, fromFile: fileURL, completionHandler: completionHandler)
+            uploadTask(with: request, fromFile: fileURL) { data, response, error in
+                completionHandler(data, response, error)
+            }
         }
     }
 
     @inline(__always)
     func upload_backport(for request: URLRequest, from bodyData: Data) async throws -> (Data, URLResponse) {
         try await adaptTask { completionHandler in
-            uploadTask(with: request, from: bodyData, completionHandler: completionHandler)
+            uploadTask(with: request, from: bodyData) { data, response, error in
+                completionHandler(data, response, error)
+            }
         }
     }
 
     @inline(__always)
     func download_backport(for request: URLRequest) async throws -> (URL, URLResponse) {
         try await adaptTask { completionHandler in
-            downloadTask(with: request, completionHandler: completionHandler)
+            downloadTask(with: request) { url, response, error in
+                completionHandler(url, response, error)
+            }
         }
     }
 
@@ -45,33 +53,36 @@ public extension URLSession {
     @inline(__always)
     func download_backport(resumeFrom resumeData: Data) async throws -> (URL, URLResponse) {
         try await adaptTask { completionHandler in
-            downloadTask(withResumeData: resumeData, completionHandler: completionHandler)
+            downloadTask(withResumeData: resumeData) { url, response, error in
+                completionHandler(url, response, error)
+            }
         }
     }
   
     @inline(__always)
-    private func adaptTask<D>(_ taskFactory: (@escaping @Sendable (D?, URLResponse?, Error?) -> Void) -> URLSessionTask) async throws -> (D, URLResponse) {
+    private func adaptTask<D>(_ taskFactory: sending (@escaping @Sendable (sending D?, URLResponse?, Error?) -> Void) -> URLSessionTask) async throws -> sending (D, URLResponse) {
         try Task.checkCancellation()
         
-        @Synchronized
-        var task: URLSessionTask?
+        nonisolated(unsafe) var task: URLSessionTask?
         
         return try await withTaskCancellationHandler(
-            operation: { [_task] in
+            operation: {
                 try Task.checkCancellation()
                 
                 return try await withCheckedThrowingContinuation { continuation in
-                    _task.wrappedValue = taskFactory { data, response, error in
+                    task = taskFactory { data, response, error in
                         guard let data, let response else {
                             continuation.resume(throwing: error!)
                             return
                         }
                         
-                        continuation.resume(returning: (data, response))
+                        nonisolated(unsafe) let result = (data, response)
+                        
+                        continuation.resume(returning: result)
                     }
                 }
             },
-            onCancel: { [_task] in _task.wrappedValue?.cancel() }
+            onCancel: { task?.cancel() }
         )
     }
 }
